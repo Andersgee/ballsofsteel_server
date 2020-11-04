@@ -1,0 +1,26 @@
+{
+  "name": "ballsofsteel_server",
+  "description": "ballsofsteel_server",
+  "main": "index.js",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "12.17.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/andersgee/ballsofsteel_server.git"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}
