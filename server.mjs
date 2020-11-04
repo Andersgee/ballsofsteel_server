@@ -32,6 +32,7 @@ server.listen(PORT, () => {
 const io = socketIO(server);
 */
 
+/*
 import http from "http";
 import express from "express";
 import socketIO from "socket.io";
@@ -44,7 +45,7 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.set("port", PORT);
-app.use("/public", express.static(__dirname + "/public"));
+app.use("/public", express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
@@ -57,6 +58,23 @@ server.listen(PORT, () => {
   console.log("Starting server.", PORT);
 });
 const io = socketIO(server);
+*/
+
+import express from "express";
+import http from "http";
+import socketIO from "socket.io";
+import index from "./public/index.js";
+
+const PORT = process.env.PORT || 3000;
+const app = express();
+app.use(index);
+app.get("/port", (req, res) => {
+  res.send(`${PORT}`).status(200);
+});
+const server = http.createServer(app);
+const io = socketIO(server);
+
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 let clientdata = {};
 let playerstates = {};
