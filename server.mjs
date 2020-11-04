@@ -63,11 +63,11 @@ const io = socketIO(server);
 import express from "express";
 import http from "http";
 import socketIO from "socket.io";
-import index from "./public/index.js";
+//import index from "./public/index.js";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-app.use(index);
+//app.use(index);
 app.get("/port", (req, res) => {
   res.send(`${PORT}`).status(200);
 });
