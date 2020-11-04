@@ -1,3 +1,4 @@
+/*
 import express from "express";
 import socketIO from "socket.io";
 import { fileURLToPath } from "url";
@@ -7,21 +8,54 @@ const __dirname = dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 const INDEX = "/public/index.html";
+*/
 /*
 const server = express()
   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 */
+/*
+const server = express()
+  .use((req, res) => res.send(`server is up at port ${PORT}`))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+*/
+/*
 const server = express();
-
-app.get("/", (req, res) => {
-  res.send(`server is up at port ${PORT}`);
+server.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
-server.listen(port, () => {
+server.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
 });
 
+const io = socketIO(server);
+*/
+
+import http from "http";
+import express from "express";
+import socketIO from "socket.io";
+import { fileURLToPath } from "url";
+import path from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const PORT = process.env.PORT || 3000;
+
+const app = express();
+app.set("port", PORT);
+app.use("/public", express.static(__dirname + "/public"));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.html"));
+});
+app.get("/port", (req, res) => {
+  res.send(`${PORT}`);
+});
+
+const server = http.Server(app);
+server.listen(PORT, () => {
+  console.log("Starting server.", PORT);
+});
 const io = socketIO(server);
 
 let clientdata = {};
