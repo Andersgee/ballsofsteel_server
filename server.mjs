@@ -21,24 +21,43 @@ server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 let gamestate = {};
 let playerstate = {};
 
-const objlen = (obj) => Object.keys(obj).length;
+let freeindexes = new Array(4).fill(true);
+
+function nextfreeindex(freeindexes) {
+  for (let i = 0; i < freeindexes.length; i++) {
+    if (freeindexes[i] === true) {
+      return i;
+    }
+  }
+  //throw "Reached maximum number of players.";
+}
+
+//const objlen = (obj) => Object.keys(obj).length;
 
 const initplayer = (socket) => {
   const id = socket.id;
   console.log("Client connected, socket.id: ", id);
   socket.emit("connection_est", "connection established");
 
-  gamestate[id] = { i: objlen(playerstate), p: [0, 0, 0], v: [0, 0, 0] };
+  let playerindex = nextfreeindex(freeindexes);
+  freeindexes[playerindex] = false;
+  console.log("player connect, freeindexes: ", freeindexes);
+
+  gamestate[id] = { i: playerindex, p: [0, 0, 0], v: [0, 0, 0] };
   playerstate[id] = [false, false, false, false];
+
+  console.log("player connect, gamestate: ", gamestate);
 
   socket.on("disconnect", () => {
     console.log("Client disconnected, socket.id: ", id);
+    freeindexes[playerindex] = true;
     delete gamestate[id];
     delete playerstate[id];
+    console.log("player disconnect, freeindexes: ", freeindexes);
   });
 
   socket.on("state", (x) => {
-    //console.log("recieved state: ", x);
+    console.log("recieved state: ", x);
     playerstate[id] = x;
   });
 
